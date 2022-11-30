@@ -15,7 +15,7 @@ public class Activitat6 {
 		
 		// Desxifrar
 		for (int n=0; n<10000; n++) {
-			String pwd = "0000" + Integer.toString(n);
+			String pwd = "000" + Integer.toString(n);
 			pwd = pwd.substring(pwd.length()-4);
 			SecretKey key = generateKey(pwd, 256);
 			try {
