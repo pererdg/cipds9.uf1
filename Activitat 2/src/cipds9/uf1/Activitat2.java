@@ -7,6 +7,12 @@ import java.util.Arrays;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * Genera clau simètrica a partir de password
+ * 
+ * @author pererdg
+ *
+ */
 public class Activitat2 {
 
 	public static void main(String[] args) throws Exception {
@@ -16,8 +22,19 @@ public class Activitat2 {
 			System.out.println("Longitud de la clau: " + sk.getEncoded().length*8);
 			System.out.println(Arrays.toString(sk.getEncoded()));
 		}
+		cryptoLib();
 	}
-	
+		
+	private static void cryptoLib() throws Exception {
+		System.out.println("-- CRYPTOLIB --");
+		int keySize[] = {128, 192, 256};
+		for (int size : keySize) {
+			SecretKey sk = CryptoSym.generateKey(size, "hola123444t643233232322332");
+			System.out.println("Longitud de la clau: " + sk.getEncoded().length*8);
+			System.out.println(Arrays.toString(sk.getEncoded()));
+		}
+	}
+			
 	/**
 	 * Genera una clau simètrica a partir d'un password
 	 * @param pwd Contrasenya 
@@ -32,5 +49,4 @@ public class Activitat2 {
 		byte[] key = Arrays.copyOf(hash, keySize/8);
 		return new SecretKeySpec(key, "AES");
 	}
-
 }

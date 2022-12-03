@@ -5,12 +5,29 @@ import java.util.Arrays;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+/**
+ * Genera clau simètrica aleatòria
+ * 
+ * @author pererdg
+ *
+ */
 public class Activitat1 {
 
 	public static void main(String[] args) throws Exception {
 		int keySize[] = {128, 192, 256};
 		for (int size : keySize) {
 			SecretKey sk = generateKey(size);
+			System.out.println("Longitud de la clau: " + sk.getEncoded().length*8);
+			System.out.println(Arrays.toString(sk.getEncoded()));
+		}
+		cryptoLib();
+	}
+	
+	private static void cryptoLib() throws Exception {
+		System.out.println("-- CRYPTOLIB --");
+		int keySize[] = {128, 192, 256};
+		for (int size : keySize) {
+			SecretKey sk = CryptoSym.generateKey(size);
 			System.out.println("Longitud de la clau: " + sk.getEncoded().length*8);
 			System.out.println(Arrays.toString(sk.getEncoded()));
 		}
@@ -27,5 +44,4 @@ public class Activitat1 {
 		kgen.init(keySize);
 		return kgen.generateKey();
 	}
-
 }

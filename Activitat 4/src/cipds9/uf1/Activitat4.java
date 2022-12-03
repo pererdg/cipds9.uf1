@@ -8,6 +8,13 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * Xifra i desxifra amb AES/ECB/PKCS5Padding
+ * Retalla el text xifrat treient els primers 16 bytes i llavors desxifra.
+ * 
+ * @author pererdg
+ *
+ */
 public class Activitat4 {
 
 	public static void main(String[] args) throws Exception {
@@ -16,27 +23,27 @@ public class Activitat4 {
 		
 		// Xifrar
 		SecretKey key = generateKey("hola", 256);
-		byte[] tx = xifraText(key, text);
+		byte[] tx = xifrarText(key, text);
 		
 		System.out.println("Longitud bytes text desxifrat " + text.getBytes().length);
 		System.out.println("Longitud bytes text xifrat " + tx.length);
 		System.out.println("Bytes text xifrat: \n" + Arrays.toString(tx));
 		
 		// Desxifrar
-		String td = desxifraText(key, tx);
+		String td = desxifrarText(key, tx);
 		System.out.println("Bytes text desxifrat: \n" + Arrays.toString(td.getBytes(StandardCharsets.UTF_8)));
 		System.out.println("Text desxifrat: \n" + td);
 
 		// Retallar 16 bytes al principi del text xifrat
 		byte[] txr = Arrays.copyOfRange(tx, 32, tx.length);
-		td = desxifraText(key, txr);
+		td = desxifrarText(key, txr);
 		System.out.println("Bytes text desxifrat retallat: \n" + Arrays.toString(td.getBytes(StandardCharsets.UTF_8)));
 		System.out.println("Text desxifrat retallat: \n" + td);
-		
 	}
 	
 	/**
 	 * Genera una clau simètrica a partir d'un password
+	 * 
 	 * @param pwd Contrasenya 
 	 * @param keySize Longitud de la clau, màxim 256
 	 * @return Clau generada (SecretKey)
@@ -50,16 +57,31 @@ public class Activitat4 {
 		return new SecretKeySpec(key, "AES");
 	}
 
-	public static byte[] xifraText(SecretKey sKey, String frase) throws Exception {
+	/**
+	 * Xifra text amb AES/ECB
+	 * 
+	 * @param sKey Clau simètrica
+	 * @param frase Text a xifrar
+	 * @return Text xifrat
+	 * @throws Exception
+	 */
+	public static byte[] xifrarText(SecretKey sKey, String frase) throws Exception {
 		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, sKey);
 		return cipher.doFinal(frase.getBytes(StandardCharsets.UTF_8));
 	}
 	
-	public static String desxifraText(SecretKey sKey, byte[] data) throws Exception {
+	/**
+	 * Desxifra text que ha estat xifrat amb AES/ECB
+	 * 
+	 * @param sKey Clau simètrica
+	 * @param data Text xifrat
+	 * @return Text desxifrat
+	 * @throws Exception
+	 */
+	public static String desxifrarText(SecretKey sKey, byte[] data) throws Exception {
 		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 		cipher.init(Cipher.DECRYPT_MODE, sKey);
 		return new String(cipher.doFinal(data), StandardCharsets.UTF_8);
 	}
-	
 }
