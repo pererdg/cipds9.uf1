@@ -46,6 +46,16 @@ public abstract class CryptoSym {
 	}
 
 	/**
+	 * Retorna un objecte SecretKey a partir d'un array de bytes obtingut de SecretKey.getEncode()
+	 *  
+	 * @param encode Clau simètrica representada com array de bytes
+	 * @return SecretKey
+	 */
+	public static SecretKey getSecretKey(byte[] encode) {
+		return new SecretKeySpec(encode, 0, encode.length, ALGORITHM);
+	}
+	
+	/**
 	 * Genera una clau simètrica {@value #ALGORITHM} a partir d'un password
 	 * 
 	 * @param pwd Contrasenya 
@@ -60,6 +70,20 @@ public abstract class CryptoSym {
 	}
 
 	/**
+	 * Retorna un Cipher inicialitzat per treballar amb l'algoritme {@value #CIPHER_INSTANCE}
+	 * 
+	 * @param sKey Clau simètrica
+	 * @param opmode Mode d'operació (Cipher.ENCRYPT_MODE ...)
+	 * @return
+	 * @throws Exception
+	 */
+	public static Cipher getCipher(SecretKey sKey, int opmode) throws Exception {
+		Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE);
+		cipher.init(opmode, sKey, IV);
+		return cipher;
+	}
+	
+	/**
 	 * Xifra dades amb {@value #CIPHER_INSTANCE}
 	 * 
 	 * @param sKey Clau simètrica
@@ -68,8 +92,7 @@ public abstract class CryptoSym {
 	 * @throws Exception
 	 */
 	public static byte[] encrypt(SecretKey sKey, byte[] data) throws Exception {
-		Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE);
-		cipher.init(Cipher.ENCRYPT_MODE, sKey, IV);
+		Cipher cipher = getCipher(sKey, Cipher.ENCRYPT_MODE);
 		return cipher.doFinal(data);
 	}
 	
@@ -96,8 +119,7 @@ public abstract class CryptoSym {
 	 * @throws Exception
 	 */
 	public static byte[] decrypt(SecretKey sKey, byte[] data) throws Exception {
-		Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE);
-		cipher.init(Cipher.DECRYPT_MODE, sKey, IV);
+		Cipher cipher = getCipher(sKey, Cipher.DECRYPT_MODE);
 		return cipher.doFinal(data);
 	}
 

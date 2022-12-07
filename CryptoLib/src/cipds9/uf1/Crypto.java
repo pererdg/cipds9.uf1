@@ -15,6 +15,15 @@ public abstract class Crypto {
 	public static final String HASH_ALGORITHM = "SHA-256";
 	
 	/**
+	 * Retorna una instància d'objecte per calcular hash {@value #HASH_ALGORITHM}
+	 * @return MessageDigest 
+	 * @throws Exception
+	 */
+	public static MessageDigest getMessageDigest() throws Exception {
+		return MessageDigest.getInstance(HASH_ALGORITHM);
+	}
+	
+	/**
 	 * Calcula hash {@value #HASH_ALGORITHM}
 	 * 
 	 * @param data Dades
@@ -22,7 +31,7 @@ public abstract class Crypto {
 	 * @throws Exception
 	 */
 	public static byte[] hash(byte[] data) throws Exception {
-		MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
+		MessageDigest md = getMessageDigest();
 		return md.digest(data);
 	}
 	

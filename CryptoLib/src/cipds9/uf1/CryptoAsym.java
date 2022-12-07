@@ -80,6 +80,21 @@ public abstract class CryptoAsym {
 	}
 	
 	/**
+	 * Xifra dades amb xifratge directe {@value #CIPHER_INSTANCE} 
+	 * 
+	 * @param pub Clau pública
+	 * @param data Dades a xifrar
+	 * @return Dades xifrades
+	 * @throws Exception
+	 */
+	public static byte[] encryptDirect(PublicKey pub, byte[] data) throws Exception {
+		// Xifrar clau amb RSA
+		Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE);
+		cipher.init(Cipher.ENCRYPT_MODE, pub);
+		return cipher.doFinal(data);
+	}
+	
+	/**
 	 * Desxifra dades xifrades amb xifratge híbrid {@value CryptoSym#CIPHER_INSTANCE} - {@value #CIPHER_INSTANCE} 
 	 * 
 	 * @param priv Clau privada
@@ -107,6 +122,21 @@ public abstract class CryptoAsym {
 	 */
 	public static String decryptText(PrivateKey priv, byte[][] wrap) throws Exception {
 		return new String(decrypt(priv,wrap), "UTF-8");
+	}
+
+	/**
+	 * Xifra dades xifrades amb xifratge directe {@value #CIPHER_INSTANCE} 
+	 * 
+	 * @param priv Clau privada
+	 * @param data Dades xifrades
+	 * @return Dades desxifrades (byte [])
+	 * @throws Exception
+	 */
+	public static byte[] decryptDirect(PrivateKey priv, byte[] data) throws Exception {
+		// Desxifrar amb clau RSA
+		Cipher cipher = Cipher.getInstance(CIPHER_INSTANCE);
+		cipher.init(Cipher.DECRYPT_MODE, priv);
+		return cipher.doFinal(data);
 	}
 
 	/**	Signa dades amb {@value #SIGN_INSTANCE}
